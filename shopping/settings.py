@@ -117,24 +117,13 @@ WSGI_APPLICATION = 'shopping.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'store_db',
-#         'USER': 'postgres',
-#         'PASSWORD': '1673495as',
-#         'HOST': '127.0.0.1',
-#         'PORT': '5432',
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ddgs458qdii394',
-        'USER': 'lzipcrmkdiowyd',
-        'PASSWORD': '6f0e560213d5d006294d18a2f4089bf8dd8a1ee0a3170f584a5bc8dddb8b096d',
-        'HOST': 'ec2-52-73-155-171.compute-1.amazonaws.com',
+        'NAME': 'store_db',
+        'USER': 'postgres',
+        'PASSWORD': '1673495as',
+        'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }
