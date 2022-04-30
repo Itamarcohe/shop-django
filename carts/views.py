@@ -87,9 +87,19 @@ class AddToCartView(APIView):
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def get_cart_items(request):
-    cart = get_object_or_404(Cart, cart_user=request.user)
+    # cart = get_object_or_404(Cart, cart_user=request.user)
+    cart = None
+    try:
+        cart = Cart.objects.get(cart_user=request.user)
+        print('reached here')
+    except:
+        Cart.objects.create(cart_user=request.user)
+        print('reached here created req')
+
     cart_items = CartItem.objects.filter(cart=cart)
+    print(cart_items)
     serializer = CartItemSerializer(cart_items, many=True)
+    print(serializer.data)
     return Response(serializer.data)
 
 
