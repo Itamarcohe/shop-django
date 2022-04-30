@@ -11,6 +11,9 @@ from rest_framework.views import APIView
 
 
 class AddToCartView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def post(self, request, *args, **kwargs):
         id = request.data.get('id', None)
         product_variation = []
@@ -133,6 +136,8 @@ def delete_cart(request):
 
 
 @api_view(['DELETE', 'GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def delete_cart_item(request, id):
     cart_item = get_object_or_404(CartItem, id=id)
     total_items = cart_item.quantity

@@ -1,12 +1,15 @@
+from django.db.models import Q
 from django.http import HttpResponse
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from category.models import Category
 from store.models import Product, Variation
 from . serializers import ProductSerializer, CategorySerializer, VariationSerializer
+import math
 
 
 @api_view(['GET'])
@@ -130,4 +133,48 @@ def productDelete(request, pk):
         product = Product.objects.get(id=pk)
         product.delete()
         return Response('Deleted product successfully')
+
+
+class ProductAPIView(APIView):
+
+    def get(self, request):
+
+        s = request.GET.get('s')
+
+        category = request.GET.get('category')
+
+        sort = request.GET.get('sort')
+        page = int(request.GET.get('page', 1))
+        per_page = 12
+
+        products = Product.objects.all()
+
+        if s:
+            products = products.filter(Q(product_name__icontains=s) |
+                                       Q(description__icontains=s))
+        if sort == 'asc':
+            products = products.order_by('price')
+        elif sort == 'desc':
+            products = products.order_by('-price')
+
+        if category:
+            products = products.filter(category__category_name__icontains=category)
+        total = products.count()
+        start = (page - 1) * per_page
+        end = page * per_page
+        serializer = ProductSerializer(products[start:end], many=True)
+        # print(serializer.data)
+        # print(len(serializer.data))
+        print(f"""
+        request {request},
+        'total' {total},
+""")
+
+        return Response({
+            'data': serializer.data,
+            'total': total,
+            'page': page,
+            'last_page': math.ceil(total / per_page)
+        })
+
 

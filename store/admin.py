@@ -8,7 +8,7 @@ from .models import Product, Variation
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('id', 'product_name', 'price', 'stock', 'category', 'is_available')
     prepopulated_fields = {'slug': ('product_name',)}
-    list_filter = ('product_name', 'category', 'is_available')
+    list_filter = ('category', 'is_available')
 
 
 class VariationAdmin(admin.ModelAdmin):
