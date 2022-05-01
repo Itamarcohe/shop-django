@@ -17,5 +17,3 @@ class CartItemSerializer(serializers.ModelSerializer):
         depth = 1
 
 
-
-
